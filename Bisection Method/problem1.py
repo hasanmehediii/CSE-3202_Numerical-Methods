@@ -1,70 +1,63 @@
 import math
-import pandas as pd
 import matplotlib.pyplot as plt
 
 def f(x):
     return 225 + 82*x - 90*x**2 + 44*x**3 - 8*x**4 + 0.7*x**5
 
-xl = -1.2
-xu = -1.0
+def bisection(a, b, tol):
+    if f(a) * f(b) >= 0:
+        print("Bisection method fails.")
+        return 0
 
-es_stop = 0.05
+    print(f"Initial interval length L0 = {b-a}")
+    print(f"{'Iter':<12}{'a':<14}{'b':<12}{'xr=(a+b)/2':<17}{'f(xr)':<20}{'εa (%)':<15}")
+    print("-"*100)
 
-data = []
-ea_list = []
-iter_list = []
+    it = 0
+    xr_old = a
+    errors = []  
+    num=0
+    while 1:
+        it += 1
+        xr = (a + b) / 2
 
-xr_old = None
-iteration = 0
+        if it == 1:
+           continue
+        else:
+            ea = abs((xr - xr_old) / xr) * 100
 
-true_root = -1.1276204097
+        
+        errors.append(ea) 
+        
+        num+=1
+        print(f"{num:<5}"
+              f"{a:<15.10f}{b:<15.10f}{xr:<15.10f}{f(xr):<20.10f}"
+              f"{(f'{ea:.10f}')}"
+              )
 
-while True:
-    iteration += 1
-    
-    xr = (xl + xu) / 2
-    fxr = f(xr)
-    
-    if xr_old is None:
-        ea = None
-    else:
-        ea = abs((xr - xr_old) / xr) * 100
-    
-    et = abs((true_root - xr) / true_root) * 100
-    
-    data.append([
-        iteration,
-        round(xl, 10),
-        round(xu, 10),
-        round(xr, 10),
-        round(fxr, 10),
-        None if ea is None else round(ea, 10),
-        round(et, 10)
-    ])
-    
-    if ea is not None:
-        ea_list.append(ea)
-        iter_list.append(iteration)
-    
-    if ea is not None and ea < es_stop:
-        break
-    
-    if f(xl) * fxr < 0:
-        xu = xr
-    else:
-        xl = xr
-    
-    xr_old = xr
+        if f(xr) == 0 :
+            break
+        elif f(a) * f(xr) < 0:
+            b = xr
+        else:
+            a = xr
 
-columns = ["Iter", "xl", "xu", "xr", "f(xr)", "Approx Error (%)", "True Error (%)"]
-df = pd.DataFrame(data, columns=columns)
+        xr_old = xr
+        if ea<tol:
+            break
+  
+    plt.figure()
+    plt.plot(range(1, len(errors)+1), errors, marker='o')
+    plt.xlabel('Iteration')
+    plt.ylabel('Absolute Error (%)')
+    plt.title('Convergence of Absolute Error in Bisection Method')
+    plt.grid(True)
+    plt.show()
 
-print(df)
+    return xr
 
-plt.figure()
-plt.plot(iter_list, ea_list, marker='o')
-plt.xlabel("Iteration Number")
-plt.ylabel("Absolute Approx Error (%)")
-plt.title("Error Convergence in Bisection Method")
-plt.grid(True)
-plt.show()
+a, b = -1.2, -1.0
+tol = 0.05
+
+root = bisection(a, b, tol)
+print(f"\nApproximate root: {root:.10f}\n")
