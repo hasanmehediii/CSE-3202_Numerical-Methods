@@ -57,7 +57,7 @@ def newton_interpolate(x_nodes, div_table, x):
         result = result + div_table[k][0] * product
     return result
 
-degrees = [2, 3, 4, 5]
+degrees = [2, 3, 4, 5, 6, 7]
 nk_values = []
 node_sets = []
 div_tables = []
@@ -70,20 +70,9 @@ for deg in degrees:
     div_tables.append(table)
     nk_values.append(val)
 
-print("=" * 65)
-print("  TASK 2 — NEWTON'S DIVIDED DIFFERENCE INTERPOLATION")
-print("  Domain  : Climate & Weather")
-print("  Problem : Estimate temperature at x* = 11.5 hours (Dhaka)")
-print("=" * 65)
-
 print(f"\nDataset loaded : {len(x_data)} points from temperature_data.csv")
 print(f"Target x*      = {x_star} hours")
 print(f"Nearest node   = index {nearest_index}, hour = {x_data[nearest_index]:.4f}")
-
-print("\nNode Ordering Strategy:")
-print("  Nodes are selected symmetrically around the nearest point to x*.")
-print("  They are ordered left to right (ascending x) so that divided")
-print("  differences capture the local behavior around the target.")
 
 print("\n" + "-" * 65)
 print("  Nodes used for each polynomial degree:")

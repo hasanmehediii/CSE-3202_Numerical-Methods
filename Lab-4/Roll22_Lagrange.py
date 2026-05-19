@@ -56,12 +56,6 @@ for deg in degrees:
     val = lagrange_interpolate(xn, yn, x_star)
     pk_values.append(val)
 
-print("=" * 60)
-print("  TASK 1 — LAGRANGE INTERPOLATION")
-print("  Domain  : Climate & Weather")
-print("  Problem : Estimate temperature at x* = 11.5 hours (Dhaka)")
-print("=" * 60)
-
 print(f"\nDataset loaded: {len(x_data)} points from CSV")
 print(f"Target x*      = {x_star} hours")
 print(f"Nearest node   = index {nearest_index}, hour = {x_data[nearest_index]:.4f}")
